@@ -151,6 +151,10 @@ model. To run the _main_ session on a strong model only while planning, use
 - The `Stop` hook finds edits and the verify command by reading the session and
   subagent transcripts. A different invocation than the configured string won't
   be recognized, and only one `verify_command` is supported.
+- The commit guard is a safety net, not a security boundary. It matches the raw
+  Bash input, including configured git aliases and `-c alias.*` overrides, without
+  parsing shell, so a script that runs `git commit` internally (`make release`)
+  is not detected. Your permission rules still apply on top of it.
 - The `workflow` skill may not activate on its own for small tasks (it tells the
   model to skip trivial ones). Name the agents or invoke the skill to force it.
 

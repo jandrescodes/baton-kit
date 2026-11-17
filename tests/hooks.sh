@@ -22,6 +22,19 @@ rm -f "$CLAUDE_PROJECT_DIR/.baton.conf"
 for c in 'git commit -m x' 'git -C /p commit -m x' 'git push origin main' 'git add . \&\& git commit -m z' 'git commit'; do
   expect "guard asks: $c" "$(guard "$c")" '"permissionDecision":"ask"'
 done
+for c in 'git commit;echo' 'git push\&\&true' "bash -c 'git commit -m x'" '(git commit -m x)' 'git -c alias.ci=commit ci -m x'; do
+  expect "guard asks (shell forms): $c" "$(guard "$c")" '"permissionDecision":"ask"'
+done
+expect "guard asks: JSON-escaped tab" "$(printf '{"tool_name":"Bash","tool_input":{"command":"git\\tcommit -m x"}}' | bash "$H/guard-commit.sh")" '"permissionDecision":"ask"'
+git -C "$CLAUDE_PROJECT_DIR" init -q
+git -C "$CLAUDE_PROJECT_DIR" config alias.ci commit
+git -C "$CLAUDE_PROJECT_DIR" config alias.up push
+git -C "$CLAUDE_PROJECT_DIR" config alias.sh '!git commit -a'
+git -C "$CLAUDE_PROJECT_DIR" config alias.st status
+for c in 'git ci -m x' 'git up' 'git sh'; do
+  expect "guard asks (configured alias): $c" "$(guard "$c")" '"permissionDecision":"ask"'
+done
+expect "guard silent: alias to status" "$(guard 'git st')" ''
 for c in 'git status' 'git log --grep commit' 'git commit-tree abc' 'echo git commitment' 'git pull'; do
   expect "guard silent: $c" "$(guard "$c")" ''
 done

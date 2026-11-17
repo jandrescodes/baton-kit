@@ -49,6 +49,9 @@ plugin (`baton`) in its own marketplace (`baton-kit`).
   at plugin level.
 - The `Stop` hook recognizes the verify command only when it appears verbatim
   in a Bash call, and supports a single `verify_command`.
+- The commit guard matches the raw Bash input (plus configured git aliases and
+  `-c alias.*` overrides) without parsing shell: a script that runs `git commit`
+  internally is not detected. It is a safety net, not a security boundary.
 - The `workflow` skill is not guaranteed to activate on its own for small tasks;
   name the agents or invoke the skill to force the method.
 
