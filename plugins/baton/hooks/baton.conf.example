@@ -1,0 +1,9 @@
+# Copy to <project root>/.baton.conf, or run /baton:init to generate it.
+# Parsed as KEY=VALUE lines, never executed.
+
+# Command that proves a change works. The Stop hook asks for it when files were
+# edited and it has not run since. Must appear verbatim in the Bash command.
+verify_command=./vendor/bin/phpunit
+
+# `ask` (default): git commit/push need explicit confirmation. `off`: disabled.
+commit_guard=ask

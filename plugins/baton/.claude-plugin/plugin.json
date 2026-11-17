@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "baton",
+  "displayName": "Baton",
+  "version": "0.1.0",
+  "license": "MIT",
+  "homepage": "https://github.com/jandrescodes/baton-kit",
+  "description": "Subagents routed by model (planner, implementer, reader), three skills, a setup command and hooks, for any stack.",
+  "author": {
+    "name": "Andres (jandrescodes)",
+    "url": "https://github.com/jandrescodes"
+  },
+  "keywords": [
+    "workflow",
+    "subagents",
+    "model-routing",
+    "planning"
+  ]
+}

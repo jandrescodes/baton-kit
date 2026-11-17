@@ -1,0 +1,27 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "baton-kit",
+  "owner": {
+    "name": "Andres (jandrescodes)",
+    "url": "https://github.com/jandrescodes"
+  },
+  "description": "Model-routed, stack-agnostic working method for Claude Code: plan with a strong model, implement with a balanced one, read with a fast one.",
+  "plugins": [
+    {
+      "name": "baton",
+      "source": "./plugins/baton",
+      "description": "Subagents routed by model (planner, implementer, reader), three skills, a setup command and hooks, for any stack.",
+      "author": {
+        "name": "Andres (jandrescodes)",
+        "url": "https://github.com/jandrescodes"
+      },
+      "category": "workflow",
+      "keywords": [
+        "workflow",
+        "subagents",
+        "model-routing",
+        "planning"
+      ]
+    }
+  ]
+}
