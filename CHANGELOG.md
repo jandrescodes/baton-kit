@@ -7,6 +7,29 @@ Semantic versioning. The canonical version lives in
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-18
+
+### Fixed
+
+- Hook `Stop`: writing `.baton.conf` (what `/baton:init` does) no longer counts
+  as an edit that needs verification, so the hook stops nagging right after
+  setup. Edits to any other file, including files with a similar name, still do.
+
+### Changed
+
+- README: "Pairs well with" became "Works with other skills" (commit skills,
+  spec-driven flows, skills from other plugins, combined hooks), and a quick
+  index sits under the title.
+
+### Added
+
+- `assets/icon.png`, shown at the top of the README.
+
+### Tests
+
+- `tests/hooks.sh` covers the `.baton.conf` case with an input shape captured
+  from a real transcript (`file_path` in the tool call), 39 cases in total.
+
 ## [0.1.0] - 2026-11-17
 
 First release: a stack-agnostic working method for Claude Code, packaged as one
@@ -55,5 +78,6 @@ plugin (`baton`) in its own marketplace (`baton-kit`).
 - The `workflow` skill is not guaranteed to activate on its own for small tasks;
   name the agents or invoke the skill to force the method.
 
-[Unreleased]: https://github.com/jandrescodes/baton-kit/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/jandrescodes/baton-kit/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/jandrescodes/baton-kit/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/jandrescodes/baton-kit/releases/tag/0.1.0

@@ -9,7 +9,7 @@ plan with a strong model, implement with a balanced one, read with a fast one,
 and keep every change verified and scoped.**
 
 [![validate](https://github.com/jandrescodes/baton-kit/actions/workflows/validate.yml/badge.svg)](https://github.com/jandrescodes/baton-kit/actions/workflows/validate.yml)
-&nbsp;[![plugin](https://img.shields.io/badge/plugin-0.1.0-2f81f7)](./CHANGELOG.md)
+&nbsp;[![plugin](https://img.shields.io/badge/plugin-0.2.0-2f81f7)](./CHANGELOG.md)
 &nbsp;![license](https://img.shields.io/badge/license-MIT-blue)
 
 <em>Stack-agnostic. Three subagents, three skills, one command, three hooks. No dependencies beyond bash.</em>
