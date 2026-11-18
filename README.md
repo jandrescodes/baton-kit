@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/icon.png" alt="baton-kit" width="96">
+
 # baton-kit
 
 **A model-routed working method for [Claude Code](https://claude.com/claude-code):
@@ -11,6 +13,8 @@ and keep every change verified and scoped.**
 &nbsp;![license](https://img.shields.io/badge/license-MIT-blue)
 
 <em>Stack-agnostic. Three subagents, three skills, one command, three hooks. No dependencies beyond bash.</em>
+
+[Install](#install) · [What you get](#what-you-get) · [Configure](#configure-per-project) · [Limits](#limits) · [Works with other skills](#works-with-other-skills)
 
 </div>
 
@@ -108,11 +112,11 @@ without approval, check versions at the source, test data with a unique marker).
 
 ### Hooks
 
-| Event               | What it does                                                                                                                  |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `PreToolUse` (Bash) | `git commit` and `git push` ask for your explicit confirmation. It asks rather than blocks, so commit skills keep working.    |
-| `Stop`              | If files were edited (by the session or by a subagent) and your verify command hasn't run since, blocks once and asks for it. |
-| `SessionStart`      | Injects a two-line reminder of the method and the project's verify command.                                                   |
+| Event               | What it does                                                                                                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PreToolUse` (Bash) | `git commit` and `git push` ask for your explicit confirmation. It asks rather than blocks, so commit skills keep working.                                                           |
+| `Stop`              | If files were edited (by the session or by a subagent) and your verify command hasn't run since, blocks once and asks for it. Writing `.baton.conf` itself doesn't count as an edit. |
+| `SessionStart`      | Injects a two-line reminder of the method and the project's verify command.                                                                                                          |
 
 ## Configure per project
 
@@ -158,11 +162,20 @@ model. To run the _main_ session on a strong model only while planning, use
 - The `workflow` skill may not activate on its own for small tasks (it tells the
   model to skip trivial ones). Name the agents or invoke the skill to force it.
 
-## Pairs well with
+## Works with other skills
 
-[`sdd-toolkit`](https://github.com/jandrescodes/sdd-toolkit): a spec-driven flow
-(spec → plan → tasks → implement → validate). `planner` writes the plan and
-`implementer` takes one task at a time.
+- **Commit skills.** The commit guard asks, it doesn't block, so a skill that
+  commits keeps working. If that skill already asks for approval and the second
+  prompt gets in the way, set `commit_guard=off` in `.baton.conf`.
+- **Spec-driven flows.** [`sdd-toolkit`](https://github.com/jandrescodes/sdd-toolkit)
+  (spec → plan → tasks → implement → validate) fits as is: `planner` writes the
+  plan and `implementer` takes one task at a time.
+- **Skills from other plugins.** baton's skills are advisory, and agents don't
+  load other plugins' skills on their own. Name the skill in the prompt, or run
+  one in a baton agent with `context: fork` and `agent: baton:reader` in its
+  frontmatter.
+- **Other hooks.** Hooks from several plugins run together; when their decisions
+  differ, the strictest wins (`deny` > `defer` > `ask` > `allow`).
 
 ## Contributing
 

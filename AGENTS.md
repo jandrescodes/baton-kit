@@ -52,6 +52,7 @@ the README badge and the top `CHANGELOG.md` entry. Tags have no `v` prefix
 ## Layout
 
 ```
+assets/icon.png
 .claude-plugin/marketplace.json
 plugins/baton/{.claude-plugin,agents,skills,commands,hooks,templates}
 tests/{validate,hooks}.sh
