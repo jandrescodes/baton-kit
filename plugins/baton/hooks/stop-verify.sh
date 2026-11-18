@@ -26,7 +26,8 @@ for f in "${transcript%.jsonl}"/subagents/*.jsonl; do [ -f "$f" ] && files+=("$f
 # Only real tool calls: transcripts also list tool definitions with the same names.
 use='"type" *: *"tool_use", *"id" *: *"[^"]*", *"name" *: *'
 
-# latest_ts TOOL_REGEX [FIXED_STRING] -> newest timestamp of a matching tool call.
+# latest_ts TOOL_REGEX [FIXED_STRING] [SKIP_REGEX] -> newest timestamp of a
+# matching tool call, ignoring lines that match SKIP_REGEX.
 latest_ts() {
   local f
   for f in "${files[@]}"; do
@@ -35,10 +36,12 @@ latest_ts() {
     else
       grep -E "${use}\"$1\"" "$f"
     fi
-  done | sed -n 's/.*"timestamp" *: *"\([^"]*\)".*/\1/p' | sort | tail -1
+  done | grep -Ev -- "${3:-^\$}" | sed -n 's/.*"timestamp" *: *"\([^"]*\)".*/\1/p' | sort | tail -1
 }
 
-last_edit="$(latest_ts '(Edit|Write|MultiEdit|NotebookEdit)')"
+# Writing the baton config itself (e.g. /baton:init) is setup, not a change to verify.
+conf_edit='"(file_path|notebook_path)" *: *"([^"]*/)?\.baton\.conf"'
+last_edit="$(latest_ts '(Edit|Write|MultiEdit|NotebookEdit)' '' "$conf_edit")"
 [ -n "$last_edit" ] || exit 0
 
 last_verify="$(latest_ts 'Bash' "$cmd")"

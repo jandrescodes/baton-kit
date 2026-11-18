@@ -72,6 +72,17 @@ reset; tool Edit 2026-01-01T10:00:00.000Z >> "$SUB/agent-a.jsonl"; tool Bash 202
 expect "stop: subagent verify is silent" "$(run)" ''
 reset; tool Edit 2026-01-01T10:00:00.000Z >> "$SUB/agent-a.jsonl"; tool Bash 2026-01-01T10:02:00.000Z 'bash check.sh' >> "$TR"
 expect "stop: main verify after subagent edit is silent" "$(run)" ''
+fedit() { # tool timestamp file_path (input shape captured from a real transcript)
+  printf '{"message":{"content":[{"type":"tool_use","id":"toolu_1","name":"%s","input":{"file_path":"%s","content":"x"},"caller":{"type":"direct"}}]},"timestamp":"%s"}\n' "$1" "$3" "$2"
+}
+reset; fedit Write 2026-01-01T10:00:00.000Z /p/.baton.conf >> "$TR"
+expect "stop: writing .baton.conf is not an edit" "$(run)" ''
+reset; fedit Write 2026-01-01T10:00:00.000Z /p/src/app.txt >> "$TR"
+expect "stop: file_path edit blocks" "$(run)" '"decision":"block"'
+reset; fedit Write 2026-01-01T10:00:00.000Z /p/src/app.txt >> "$TR"; fedit Write 2026-01-01T10:01:00.000Z /p/.baton.conf >> "$TR"
+expect "stop: real edit plus later .baton.conf write still blocks" "$(run)" '"decision":"block"'
+reset; fedit Write 2026-01-01T10:00:00.000Z /p/my.baton.conf.bak >> "$TR"
+expect "stop: similar filename is still an edit" "$(run)" '"decision":"block"'
 reset; tool Edit 2026-01-01T10:00:00.000Z >> "$TR"
 rm -f "$CLAUDE_PROJECT_DIR/.baton.conf"
 expect "stop: no verify_command does nothing" "$(run)" ''
